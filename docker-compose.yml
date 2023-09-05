@@ -1,0 +1,73 @@
+version: '3'
+services:
+  postgres-auth:
+    image: postgres
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    networks:
+      - backend
+
+  postgres-user:
+    image: postgres
+    ports:
+      - '5433:5432'
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    networks:
+      - backend
+
+  postgres-order:
+    image: postgres
+    ports:
+      - '5434:5432'
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    networks:
+      - backend
+
+  postgres-product:
+    image: postgres
+    ports:
+      - '5435:5432'
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    networks:
+      - backend
+
+  rabbitmq:
+    image: rabbitmq:management
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    depends_on:
+      - postgres-auth
+      - postgres-user
+      - postgres-product
+      - postgres-order
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
+volumes:
+  pg_data:
+    driver: local
