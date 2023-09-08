@@ -10,6 +10,7 @@ import { JwtStrategy } from './strategy/jwt.strategy';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import Auth from './entity/auth.entity';
 import { HttpModule } from '@nestjs/axios';
+import { GoogleStrategy } from './strategy/google.strategy';
 
 @Module({
   imports: [
@@ -32,7 +33,7 @@ import { HttpModule } from '@nestjs/axios';
       useFactory: (configService: ConfigService) => ({
         secret: configService.get<string>('JWT_SECRET'),
         signOptions: {
-          expiresIn: `${configService.get('JWT_EXPIRATION')}d`,
+          expiresIn: `${configService.get('JWT_EXPIRATION')}h`,
         },
       }),
       inject: [ConfigService],
@@ -60,6 +61,6 @@ import { HttpModule } from '@nestjs/axios';
     TypeOrmModule.forFeature([Auth]),
   ],
   controllers: [AuthController],
-  providers: [AuthService, LocalStrategy, JwtStrategy],
+  providers: [AuthService, LocalStrategy, JwtStrategy, GoogleStrategy],
 })
 export class AuthModule {}

@@ -19,6 +19,7 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
+  @EventPattern('user_register')
   createUser(@Body() data: CreateUserDto) {
     return this.usersService.createUser(data);
   }
@@ -44,11 +45,5 @@ export class UsersController {
   @Delete(':id')
   deleteUser(@Param('id', ParseUUIDPipe) id: string) {
     return this.usersService.deleteUser(id);
-  }
-
-  @EventPattern('user_register')
-  show(data) {
-    console.log(data);
-    return data;
   }
 }

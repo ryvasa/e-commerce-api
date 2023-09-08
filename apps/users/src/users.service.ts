@@ -13,9 +13,8 @@ export class UsersService {
     @Inject('USER_SERVICE') private readonly client: ClientProxy,
   ) {}
   async createUser(data: CreateUserDto) {
-    // this.userRepository.create(data);
-    // return this.userRepository.save(data);
-    console.log(data);
+    this.userRepository.create(data);
+    return this.userRepository.save(data);
   }
   async getAllUsers(): Promise<User[]> {
     const users = await this.userRepository.find({});
