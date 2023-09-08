@@ -35,19 +35,20 @@ import { ConfigType } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { ConfigService } from '@nestjs/config';
 import { Strategy, VerifyCallback } from 'passport-google-oauth20';
 import Auth from '../entity/auth.entity';
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
   constructor(
+    private configService: ConfigService,
     @InjectRepository(Auth) private authRepository: Repository<Auth>,
   ) {
     super({
-      clientID:
-        '923050935039-77k9jvk0k34r9prrsmnmkvd01ft7mdil.apps.googleusercontent.com',
-      clientSecret: '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',
-      callbackURL: 'http://localhost:3001/auth/google/redirect',
+      clientID: configService.get('CLIENT_ID'),
+      clientSecret: configService.get('CLIENT_SECRET'),
+      callbackURL: configService.get('CALLBACK_URL'),
       scope: ['profile', 'email'],
     });
   }
